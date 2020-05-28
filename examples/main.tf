@@ -1,7 +1,7 @@
 
 module "datadog" {
   source                = "app.terraform.io/group-1001/datadog/aws"
-  version               = "1.0.6"
+  version               = "1.0.7"
   aws_region            = var.aws_region
   datadog_api_key       = var.dd_api_key
   aws_account_id        = data.aws_caller_identity.current.account_id

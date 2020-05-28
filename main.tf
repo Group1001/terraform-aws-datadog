@@ -23,7 +23,7 @@ resource "aws_iam_policy" "datadog_core" {
   name        = "datadog-core-integration"
   path        = "/"
   description = "This IAM policy allows for core datadog integration permissions"
-  policy      = data.aws_iam_policy_document.datadog_core
+  policy      = data.aws_iam_policy_document.datadog_core.json
 }
 
 resource "aws_iam_role_policy_attachment" "datadog_core" {
