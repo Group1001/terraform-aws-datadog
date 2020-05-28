@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "datadog_role" {
       type        = "AWS"
       identifiers = ["arn:aws:iam::464622532012:root"]
     }
-    conditions {
+    condition {
       test     = "StringEquals"
       variable = "sts:ExternalId"
       values = [
