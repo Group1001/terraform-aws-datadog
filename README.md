@@ -21,7 +21,7 @@ There are two main components:
 ```
 module "datadog" {
   source                = "app.terraform.io/group-1001/datadog/aws"
-  version               = "1.0.7"
+  version               = "1.0.8"
   aws_account_id        = data.aws_caller_identity.current.account_id
   datadog_api_key       = var.datadog_api_key
   env                   = "prod"
