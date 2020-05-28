@@ -1,8 +1,5 @@
 # terraform-aws-datadog
 
-[![cicd](https://github.com/scribd/terraform-aws-datadog/workflows/CICD/badge.svg)](https://github.com/scribd/terraform-aws-datadog/actions)
-[![terraformregistry](https://img.shields.io/badge/terraform-registry-blueviolet)](https://registry.terraform.io/modules/scribd/datadog/aws)
-
 This module configures the AWS / Datadog integration.
 
 There are two main components:
@@ -23,18 +20,15 @@ There are two main components:
 
 ```
 module "datadog" {
-  source                = "scribd/datadog/aws"
-  version               = "~>1"
+  source                = "app.terraform.io/group-1001/datadog/aws"
+  version               = "1.0.1"
   aws_account_id        = data.aws_caller_identity.current.account_id
   datadog_api_key       = var.datadog_api_key
   env                   = "prod"
   namespace             = "team_foo"
-
   cloudtrail_bucket_id  = aws_s3_bucket.org-cloudtrail-bucket.id
   cloudtrail_bucket_arn = aws_s3_bucket.org-cloudtrail-bucket.arn
-
   cloudwatch_log_groups = ["cloudwatch_log_group_1", "cloudwatch_log_group_2"]
-
   account_specific_namespace_rules = {
     elasticache = true
     network_elb = true
@@ -52,48 +46,20 @@ Creating this module in multiple terraform stacks will cause conflicts.
 
 ```
 module "datadog" {
-  source                         = "scribd/datadog/aws"
-  version                        = "~>1"
+  source                         = "app.terraform.io/group-1001/datadog/aws"
+  version                        = "1.0.1"
   datadog_api_key                = var.datadog_api_key
   create_elb_logs_bucket         = false
   enable_datadog_aws_integration = false
   env                            = "prod"
   namespace                      = "project_foo"
-
-  cloudwatch_log_groups = ["cloudwatch_log_group_1", "cloudwatch_log_group_2"]
+  cloudwatch_log_groups          = [
+    "cloudwatch_log_group_1",
+    "cloudwatch_log_group_2"
+  ]
 }
 ```
 
 Note: It is safe to create multiple Cloudwatch only modules across different
 Terraform stacks within a single AWS account since all resouces used for
 Cloudwatch log sync are namspaced by module.
-
-
-## Examples
-
-- [Full AWS Datadog integration](https://github.com/scribd/terraform-aws-datadog/tree/master/examples/full_integration)
-- [Cloudwatch log sync only](https://github.com/scribd/terraform-aws-datadog/tree/master/examples/cloudwatch_log_sync)
-
-
-## Development
-
-Releases are cut using [semantic-release](https://github.com/semantic-release/semantic-release).
-
-Please write commit messages following [Angular commit guidelines](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines)
-
-
-### Release flow
-
-Semantic-release is configured with the [default branch workflow](https://semantic-release.gitbook.io/semantic-release/usage/configuration#branches)
-
-For this project, releases will be cut from master as features and bugs are developed.
-
-
-### Maintainers
-- [Jim](https://github.com/jim80net)
-- [QP](https://github.com/houqp)
-
-## Troubleshooting
-
-If you should encounter `Datadog is not authorized to perform action sts:AssumeRole Accounts affected: 1234567890, 1234567891 Regions affected: every region Errors began reporting 18m ago, last seen 5m ago`
-Then perhaps the external ID has changed. Execute `./terraform taint module.datadog.datadog_integration_aws.core[0]` in the root module of the account repo to force a refresh.
