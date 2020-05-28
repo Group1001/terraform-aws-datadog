@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 data local_file "datadog_forwarder_cloud_formation_template" {
   filename = "${path.module}/files/logs_monitoring_template.yaml"
 }
