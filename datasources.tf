@@ -105,6 +105,8 @@ data "aws_iam_policy_document" "datadog_core" {
       "sns:List*",
       "sns:Publish",
       "sqs:ListQueues",
+      "stepfunctions:List*",
+      "stepfunctions:Get*",
       "support:*",
       "tag:GetResources",
       "tag:GetTagKeys",
