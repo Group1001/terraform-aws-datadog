@@ -120,3 +120,27 @@ data "aws_iam_policy_document" "datadog_core" {
     effect = "Allow"
   }
 }
+
+data "aws_iam_policy_document" "datadog_rehidration_core" {
+  statement {
+    sid = "DatadogUploadAndRehydrateLogArchives"
+    actions = [
+      "s3:PutObject",
+      "s3:GetObject"
+    ]
+    resources = [
+      "${aws_s3_bucket.this.arn}/*"
+    ]
+    effect = "Allow"
+  }
+  statement {
+    sid = "DatadogRehydrateLogArchivesListBucket"
+    actions = [
+      "s3:ListBucket"
+    ]
+    resources = [
+      aws_s3_bucket.this.arn
+    ]
+    effect = "Allow"
+  }
+}

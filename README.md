@@ -21,11 +21,10 @@ There are two main components:
 ```
 module "datadog" {
   source                = "app.terraform.io/group-1001/datadog/aws"
-  version               = "1.0.11"
+  version               = "1.0.12"
   aws_account_id        = data.aws_caller_identity.current.account_id
   datadog_api_key       = var.datadog_api_key
-  env                   = "prod"
-  namespace             = "team_foo"
+  account_name          = "team_foo"
   cloudtrail_bucket_id  = aws_s3_bucket.org-cloudtrail-bucket.id
   cloudtrail_bucket_arn = aws_s3_bucket.org-cloudtrail-bucket.arn
   cloudwatch_log_groups = ["cloudwatch_log_group_1", "cloudwatch_log_group_2"]
@@ -36,30 +35,3 @@ module "datadog" {
   }
 }
 ```
-
-Note: The full integration setup should only be done within one terraform stack
-per account since some of the resources it creates are global per account.
-Creating this module in multiple terraform stacks will cause conflicts.
-
-
-**Limit to only Cloudwatch log sync**
-
-```
-module "datadog" {
-  source                         = "app.terraform.io/group-1001/datadog/aws"
-  version                        = "1.0.3"
-  datadog_api_key                = var.datadog_api_key
-  create_elb_logs_bucket         = false
-  enable_datadog_aws_integration = false
-  env                            = "prod"
-  namespace                      = "project_foo"
-  cloudwatch_log_groups          = [
-    "cloudwatch_log_group_1",
-    "cloudwatch_log_group_2"
-  ]
-}
-```
-
-Note: It is safe to create multiple Cloudwatch only modules across different
-Terraform stacks within a single AWS account since all resouces used for
-Cloudwatch log sync are namspaced by module.
