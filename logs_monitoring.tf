@@ -7,7 +7,7 @@ resource aws_cloudformation_stack "datadog_forwarder" {
   ]
   parameters = {
     DdApiKeySecret = aws_secretsmanager_secret.datadog_api_key.arn
-    DdTags         = "namespace:${var.namespace},env:${var.env}"
+    DdTags         = "account_id:${data.aws_caller_identity.current.account_id},account_name:${var.account_name}"
     ExcludeAtMatch = var.log_exclude_at_match
     FunctionName   = "${local.stack_prefix}datadog-forwarder"
   }

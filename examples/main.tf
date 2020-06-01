@@ -1,12 +1,10 @@
 
 module "datadog" {
-  source                = "app.terraform.io/group-1001/datadog/aws"
-  version               = "1.0.11"
+  source                = "../"
   aws_region            = var.aws_region
   datadog_api_key       = var.dd_api_key
   aws_account_id        = data.aws_caller_identity.current.account_id
-  env                   = "prod"
-  namespace             = "team_foo"
+  account_name          = "team_foo"
   cloudtrail_bucket_id  = "S3_BUCKET_ID"
   cloudtrail_bucket_arn = "S3_BUCKET_ARN"
   cloudwatch_log_groups = ["cloudwatch_log_group_1", "cloudwatch_log_group_2"]

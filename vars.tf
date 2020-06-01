@@ -23,11 +23,6 @@ variable "datadog_api_key" {
   type        = string
 }
 
-variable "namespace" {
-  description = "The namespace tag to apply to all data sent to datadog"
-  type        = string
-}
-
 variable "create_elb_logs_bucket" {
   description = "Create S3 bucket for ELB log sync"
   default     = true
@@ -45,8 +40,8 @@ variable "enable_datadog_aws_integration" {
   default     = true
 }
 
-variable "env" {
-  description = "The env tag to apply to all data sent to datadog"
+variable "account_name" {
+  description = "The account_name tag to apply to all data sent to datadog"
   type        = string
 }
 
