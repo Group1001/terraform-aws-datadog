@@ -15,6 +15,14 @@ resource "aws_iam_policy" "datadog_core" {
   policy      = data.aws_iam_policy_document.datadog_core.json
 }
 
+resource "aws_iam_policy" "datadog_rehidration_core" {
+  count       = var.enable_datadog_aws_integration ? 1 : 0
+  name        = "datadog-core-integration-rehidration"
+  path        = "/"
+  description = "Allows Datadog to archive and rehidrate the logs from a named S3 bucket"
+  policy      = data.aws_iam_policy_document.datadog_rehidration_core.json
+}
+
 resource "aws_iam_role_policy_attachment" "datadog_core" {
   count      = var.enable_datadog_aws_integration ? 1 : 0
   role       = aws_iam_role.datadog_integration[0].name
@@ -24,5 +32,5 @@ resource "aws_iam_role_policy_attachment" "datadog_core" {
 resource "aws_iam_role_policy_attachment" "datadog_core_logs" {
   count      = var.enable_datadog_aws_integration ? 1 : 0
   role       = aws_iam_role.datadog_integration[0].name
-  policy_arn = data.aws_iam_policy_document.datadog_rehidration_core[0].arn
+  policy_arn = aws_iam_policy.datadog_rehidration_core[0].arn
 }
